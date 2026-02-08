@@ -13,6 +13,8 @@
   },
   "scripts": {
     "quartz": "./quartz/bootstrap-cli.mjs",
+    "build": "npx quartz build -d /Users/zhengjing/Documents/正靖的私人笔记/public",
+    "serve": "npx quartz build --serve -d /Users/zhengjing/Documents/正靖的私人笔记/public",
     "docs": "npx quartz build --serve -d docs",
     "check": "tsc --noEmit && npx prettier . --check",
     "format": "npx prettier . --write",
