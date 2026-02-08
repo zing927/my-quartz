@@ -89,6 +89,12 @@ npm run build
 if [ $? -eq 0 ]; then
     echo "✅ 构建成功"
     
+    # 恢复 favicon.ico 文件
+    if [ -f "favicon.ico" ]; then
+        echo "🔖 恢复 favicon.ico 文件..."
+        cp favicon.ico public/favicon.ico
+    fi
+    
     echo "📝 提交到 Git..."
     git add .
     

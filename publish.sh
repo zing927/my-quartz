@@ -12,6 +12,12 @@ echo "📝 步骤 1: 同步 Obsidian 内容..."
 echo "🔨 步骤 2: 构建网站..."
 npm run build
 
+# 恢复 favicon.ico 文件
+if [ -f "favicon.ico" ]; then
+    echo "🔖 恢复 favicon.ico 文件..."
+    cp favicon.ico public/favicon.ico
+fi
+
 # 3. 提交到 Git
 echo "📦 步骤 3: 提交到 Git..."
 git add .
