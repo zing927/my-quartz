@@ -4,11 +4,10 @@
 
 cd /Users/zhengjing/Documents/my-quartz
 
-# 清空 content 并复制 Obsidian 的 public 文件夹，保持完全一致
-echo "📁 同步 Obsidian 内容到 Quartz（完全覆盖）..."
+# 使用 rsync 同步 Obsidian 的 public 文件夹到 Quartz，只处理有变化的文件
+echo "📁 同步 Obsidian 内容到 Quartz（增量同步）..."
 mkdir -p content
-rm -rf content/*
-cp -r "/Users/zhengjing/Documents/正靖的私人笔记/public/"* content/
+rsync -av --delete "/Users/zhengjing/Documents/正靖的私人笔记/public/" content/
 
 echo "🔨 开始构建 Quartz..."
 npm run build
