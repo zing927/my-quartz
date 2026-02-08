@@ -4,6 +4,11 @@
 
 cd /Users/zhengjing/Documents/my-quartz
 
+# 自动复制 Obsidian 的 public 文件夹到 Quartz
+echo "📁 复制 Obsidian 内容到 Quartz..."
+mkdir -p content
+cp -r "/Users/zhengjing/Documents/正靖的私人笔记/public/"* content/
+
 echo "🔨 开始构建 Quartz..."
 npm run build
 
