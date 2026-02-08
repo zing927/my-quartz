@@ -29,33 +29,33 @@ if [ -n "$IMAGE_FILES" ]; then
         # 读取文件内容
         FILE_CONTENT=$(cat "$FILE")
         
-        # 使用 awk 提取完整的图片链接（包含空格）
-        IMAGES_IN_FILE=$(echo "$FILE_CONTENT" | awk '{
-            while (match($0, /!\[\[(.*\.png)\]\]/)) {
-                print substr($0, RSTART+3, RLENGTH-6)
-                $0 = substr($0, RSTART+RLENGTH)
-            }
-        }')
+        # 使用 grep 提取完整的图片链接（包含空格）
+        IMAGES_IN_FILE=$(echo "$FILE_CONTENT" | grep -o "!\[\[.*\.png\]\]" | sed 's/!\[\[//;s/\]\]//')
         
         if [ -n "$IMAGES_IN_FILE" ]; then
-            # 复制每个图片
-            while IFS= read -r IMAGE; do
-                TOTAL_IMAGES=$((TOTAL_IMAGES + 1))
-                SOURCE_IMAGE="/Users/zhengjing/Documents/正靖的私人笔记/$IMAGE"
-                DEST_IMAGE="content/images/$IMAGE"
-                
-                if [ -f "$SOURCE_IMAGE" ]; then
-                    echo "📄 复制图片: $IMAGE"
-                    cp "$SOURCE_IMAGE" "$DEST_IMAGE"
-                else
-                    echo "⚠️  找不到图片: $IMAGE"
+            # 直接处理图片（假设只有一个图片引用）
+            TOTAL_IMAGES=$((TOTAL_IMAGES + 1))
+            IMAGE="$IMAGES_IN_FILE"
+            SOURCE_IMAGE="/Users/zhengjing/Documents/正靖的私人笔记/$IMAGE"
+            DEST_IMAGE="content/images/$IMAGE"
+            
+            if [ -f "$SOURCE_IMAGE" ]; then
+                echo "📄 复制图片: $IMAGE"
+                cp "$SOURCE_IMAGE" "$DEST_IMAGE"
+            else
+                echo "⚠️  找不到图片: $IMAGE"
+                # 尝试查找所有可能的图片文件
+                POSSIBLE_IMAGES=$(find "/Users/zhengjing/Documents/正靖的私人笔记" -name "*$IMAGE*" -o -name "*$(echo "$IMAGE" | cut -d' ' -f1)*")
+                if [ -n "$POSSIBLE_IMAGES" ]; then
+                    echo "🔍 可能的图片文件:"
+                    echo "$POSSIBLE_IMAGES"
                 fi
-            done <<< "$IMAGES_IN_FILE"
+            fi
             
             # 更新文件中的图片链接
             echo "🔄 更新文件中的图片链接..."
             # 使用 perl 代替 sed 来处理包含空格的正则表达式
-            perl -i -pe 's/!\[\[(Pasted image.*?\.png)\]\]/!\[\[images\/\1\]\]/g' "$FILE"
+            perl -i -pe 's/!\[\[(.*?\.png)\]\]/!\[\[images\/\1\]\]/g' "$FILE"
         fi
     done
     
