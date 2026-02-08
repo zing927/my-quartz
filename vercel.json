@@ -4,5 +4,11 @@
   "installCommand": "npm install",
   "cleanUrls": true,
   "trailingSlash": false,
-  "framework": null
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    }
+  ]
 }
