@@ -16,7 +16,7 @@ const config: QuartzConfig = {
       provider: null,
     },
     locale: "zh-CN",
-    baseUrl: "example.com", // 请修改为你的实际域名
+    baseUrl: "my-quartz-liart.vercel.app"
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
