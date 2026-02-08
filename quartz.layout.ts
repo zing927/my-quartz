@@ -1,6 +1,14 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 
+// 主题和布局参考 jackyzha0/quartz v4 官方 + jzhao.xyz（Recent Writing / Recent Notes）
+const isWriting = (f: { slug?: string }) =>
+  (f.slug ?? "").startsWith("posts/") || (f.slug ?? "").startsWith("blog/")
+const isNote = (f: { slug?: string }) => {
+  const s = f.slug ?? ""
+  return !s.startsWith("posts/") && !s.startsWith("blog/") && s !== "index"
+}
+
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
@@ -30,15 +38,24 @@ export const defaultContentPageLayout: PageLayout = {
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [
-        {
-          Component: Component.Search(),
-          grow: true,
-        },
+        { Component: Component.Search(), grow: true },
         { Component: Component.Darkmode() },
-        { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.RecentNotes({
+      title: "最近的写作",
+      limit: 4,
+      showTags: false,
+      linkToMore: "posts",
+      filter: isWriting,
+    }),
+    Component.RecentNotes({
+      title: "最近的笔记",
+      limit: 4,
+      showTags: false,
+      linkToMore: false,
+      filter: isNote,
+    }),
   ],
   right: [
     Component.Graph(),
@@ -55,14 +72,24 @@ export const defaultListPageLayout: PageLayout = {
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [
-        {
-          Component: Component.Search(),
-          grow: true,
-        },
+        { Component: Component.Search(), grow: true },
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.RecentNotes({
+      title: "最近的写作",
+      limit: 4,
+      showTags: false,
+      linkToMore: "posts",
+      filter: isWriting,
+    }),
+    Component.RecentNotes({
+      title: "最近的笔记",
+      limit: 4,
+      showTags: false,
+      linkToMore: false,
+      filter: isNote,
+    }),
   ],
   right: [],
 }
