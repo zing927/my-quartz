@@ -16,7 +16,7 @@ const config: QuartzConfig = {
       provider: null,
     },
     locale: "zh-CN",
-    baseUrl: "my-quartz-liart.vercel.app"
+    baseUrl: "my-quartz-liart.vercel.app",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
