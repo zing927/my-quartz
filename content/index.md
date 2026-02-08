@@ -1,7 +1,7 @@
 ---
 title: 欢迎来到我的博客
 ---
-![[images/Pasted image 20260208184045.png]]
+![[images/Pasted image 20260208191301.png]]
 
 欢迎来到我的个人博客！
 
