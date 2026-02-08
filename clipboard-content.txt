@@ -1,0 +1,2 @@
+cd /Users/zhengjing/Documents/my-quartz
+./sync.sh

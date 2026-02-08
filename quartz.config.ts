@@ -86,7 +86,7 @@ const config: QuartzConfig = {
       }),
       Plugin.Assets(),
       Plugin.Static(),
-      Plugin.Favicon(),
+      // Plugin.Favicon(), // 禁用自动生成 favicon，用户将手动替换
       Plugin.NotFoundPage(),
       // Comment out CustomOgImages to speed up build time
       // Plugin.CustomOgImages(),
