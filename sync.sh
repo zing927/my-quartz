@@ -14,28 +14,52 @@ echo "🖼️  自动处理 Obsidian 图片..."
 mkdir -p content/images
 
 # 查找所有 Markdown 文件中引用的 Obsidian 图片链接
-IMAGE_LINKS=$(grep -r "!\[\[.*\.png\]\]" content/ | grep -o "\[\[.*\.png\]\]" | sed 's/\[\[//;s/\]\]//')
+echo "🔍 搜索 Markdown 文件中的图片引用..."
+IMAGE_FILES=$(grep -r "!\[\[.*\.png\]\]" content/ | cut -d: -f1 | uniq)
 
-if [ -n "$IMAGE_LINKS" ]; then
-    echo "🔍 发现 $(echo "$IMAGE_LINKS" | wc -l) 个图片引用"
+TOTAL_IMAGES=0
+
+if [ -n "$IMAGE_FILES" ]; then
+    echo "📄 发现 $(echo "$IMAGE_FILES" | wc -l) 个文件包含图片引用"
     
-    # 复制每个引用的图片到 content/images 目录
-    for IMAGE in $IMAGE_LINKS; do
-        SOURCE_IMAGE="/Users/zhengjing/Documents/正靖的私人笔记/$IMAGE"
-        DEST_IMAGE="content/images/$IMAGE"
+    # 处理每个包含图片引用的文件
+    for FILE in $IMAGE_FILES; do
+        echo "🔄 处理文件: $FILE"
         
-        if [ -f "$SOURCE_IMAGE" ]; then
-            echo "📄 复制图片: $IMAGE"
-            cp "$SOURCE_IMAGE" "$DEST_IMAGE"
-        else
-            echo "⚠️  找不到图片: $IMAGE"
+        # 读取文件内容
+        FILE_CONTENT=$(cat "$FILE")
+        
+        # 使用 awk 提取完整的图片链接（包含空格）
+        IMAGES_IN_FILE=$(echo "$FILE_CONTENT" | awk '{
+            while (match($0, /!\[\[(.*\.png)\]\]/)) {
+                print substr($0, RSTART+3, RLENGTH-6)
+                $0 = substr($0, RSTART+RLENGTH)
+            }
+        }')
+        
+        if [ -n "$IMAGES_IN_FILE" ]; then
+            # 复制每个图片
+            while IFS= read -r IMAGE; do
+                TOTAL_IMAGES=$((TOTAL_IMAGES + 1))
+                SOURCE_IMAGE="/Users/zhengjing/Documents/正靖的私人笔记/$IMAGE"
+                DEST_IMAGE="content/images/$IMAGE"
+                
+                if [ -f "$SOURCE_IMAGE" ]; then
+                    echo "📄 复制图片: $IMAGE"
+                    cp "$SOURCE_IMAGE" "$DEST_IMAGE"
+                else
+                    echo "⚠️  找不到图片: $IMAGE"
+                fi
+            done <<< "$IMAGES_IN_FILE"
+            
+            # 更新文件中的图片链接
+            echo "🔄 更新文件中的图片链接..."
+            # 使用 perl 代替 sed 来处理包含空格的正则表达式
+            perl -i -pe 's/!\[\[(Pasted image.*?\.png)\]\]/!\[\[images\/\1\]\]/g' "$FILE"
         fi
     done
     
-    # 更新 Markdown 文件中的图片链接格式
-    echo "🔄 更新 Markdown 文件中的图片链接..."
-    find content/ -name "*.md" -exec sed -i '' 's/!\[\[(Pasted image.*\.png)\]\]/!\[\[images\/\1\]\]/g' {} \;
-    echo "✅ 图片链接更新完成"
+    echo "✅ 处理完成，共发现 $TOTAL_IMAGES 个图片引用"
 else
     echo "ℹ️  没有发现图片引用"
 fi
