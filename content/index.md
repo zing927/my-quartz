@@ -1,8 +1,3 @@
----
-title: Zing Openlife
-description: 欢迎来到 Zing Openlife 个人博客
----
-
 ![[images/Pasted image 20260208221216.png]]
 
 欢迎来到我的个人博客！
