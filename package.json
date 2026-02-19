@@ -13,7 +13,7 @@
   },
   "scripts": {
     "quartz": "./quartz/bootstrap-cli.mjs",
-    "build": "npx quartz build -d ./content",
+    "build": "npx quartz build -d ./content && cp favicon.ico public/favicon.ico",
     "serve": "npx quartz build --serve -d ./content",
     "docs": "npx quartz build --serve -d docs",
     "check": "tsc --noEmit && npx prettier . --check",
