@@ -16,7 +16,7 @@ const config: QuartzConfig = {
       provider: null,
     },
     locale: "zh-CN",
-    baseUrl: "my-quartz-nu.vercel.app",
+    baseUrl: "zinglife.top",
     ignorePatterns: [".DS_Store", ".obsidian", ".claude", "*.canvas"],
     defaultDateType: "modified",
     theme: {
