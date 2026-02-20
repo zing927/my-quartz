@@ -7,7 +7,7 @@ cd /Users/zhengjing/Documents/my-quartz
 # 使用 rsync 同步 Obsidian 的 public 文件夹到 Quartz，只处理有变化的文件
 echo "📁 同步 Obsidian 内容到 Quartz（增量同步）..."
 mkdir -p content
-rsync -av --delete "/Users/zhengjing/Documents/正靖的私人笔记/public/" content/
+rsync -av --delete --exclude='index.md' "/Users/zhengjing/Documents/正靖的私人笔记/public/" content/
 
 # 自动处理 Obsidian 图片文件
 echo "🖼️  自动处理 Obsidian 图片..."
